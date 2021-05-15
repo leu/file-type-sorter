@@ -3,11 +3,15 @@ package io.github.leu;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class FileSort {
   FileSystem fileSystem = FileSystems.getDefault();
   File rootFileDir;
+  public static String[] UNWANTED_FILETYPES = {"7z", "ai", "asp", "bat", "c", "csv", "db", "doc",
+          "f", "go", "h", "ini", "jar", "java", "json", "jsp", "odg", "php", "pl",
+          "ppt", "sxw", "tex", "vsd", "xls", "zip"};
 
   FileSort(String rootDir) {
     rootFileDir = fileSystem.getPath(rootDir).toFile();
@@ -39,11 +43,16 @@ public class FileSort {
     Path destinationFolder = fileSystem.getPath(root.getPath() + "/" + fileType);
     Path destinationFile = fileSystem.getPath(root.getPath() + "/" + fileType + "/" + file.getName());
 
+
     try {
-      if (!Files.exists(destinationFolder)) {
-        Files.createDirectory(destinationFolder);
+      if (Arrays.asList(UNWANTED_FILETYPES).contains(fileType)) {
+        Files.delete(file.toPath());
+      } else {
+        if (!Files.exists(destinationFolder)) {
+          Files.createDirectory(destinationFolder);
+        }
+        Files.move(file.toPath(), destinationFile);
       }
-      Files.move(file.toPath(), destinationFile);
     } catch (IOException e) {
       System.out.println("Problem moving file!");
     }
