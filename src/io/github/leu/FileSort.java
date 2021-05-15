@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class FileSort {
   FileSystem fileSystem = FileSystems.getDefault();
   File rootFileDir;
+  HashMap<String, int[]> fileTypeFolderSize = new HashMap<>();
   public static String[] UNWANTED_FILETYPES = {"7z", "ai", "asp", "bat", "c", "csv", "db", "doc",
           "f", "go", "h", "ini", "jar", "java", "json", "jsp", "odg", "php", "pl",
           "ppt", "sxw", "tex", "vsd", "xls", "zip"};
@@ -40,9 +42,16 @@ public class FileSort {
 
   private void fileSort(File root, File file) { //PRE: file has format name.(extension)
     String fileType = file.getName().split("\\.")[1];
-    Path destinationFolder = fileSystem.getPath(root.getPath() + "/" + fileType);
-    Path destinationFile = fileSystem.getPath(root.getPath() + "/" + fileType + "/" + file.getName());
+    if (!fileTypeFolderSize.containsKey(fileType)) {
+      int[] initialFolderSize = {0, 0}; //{folderNum, numOfFilesInFolder}
+      fileTypeFolderSize.put(fileType, initialFolderSize);
+    }
+    int folderNum = fileTypeFolderSize.get(fileType)[0];
+    int folderSize = fileTypeFolderSize.get(fileType)[1];
 
+    String folderPath = root.getPath() + "/" + fileType + "#" + folderNum;
+    Path destinationFolder = fileSystem.getPath(folderPath);
+    Path destinationFile = fileSystem.getPath(folderPath + "/" + file.getName());
 
     try {
       if (Arrays.asList(UNWANTED_FILETYPES).contains(fileType)) {
@@ -52,6 +61,15 @@ public class FileSort {
           Files.createDirectory(destinationFolder);
         }
         Files.move(file.toPath(), destinationFile);
+
+        if (folderSize == 99) {
+          folderNum++;
+          folderSize = 0;
+        } else {
+          folderSize++;
+        }
+        int[] nextFile = {folderNum, folderSize};
+        fileTypeFolderSize.replace(fileType, nextFile);
       }
     } catch (IOException e) {
       System.out.println("Problem moving file!");
