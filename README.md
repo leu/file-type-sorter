@@ -4,6 +4,6 @@ partitions all files inside the source directory into folders under the source d
 
 deletes all folders originally under the source directory
 
-deletes certain unwanted file types. see source code.
+deletes certain unwanted file types including zip! see source code.
 
 specifically useful for me after using the photorec tool to recover lost files on my pc, to make finding the files i need easier
