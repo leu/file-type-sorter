@@ -14,6 +14,7 @@ public class FileSort {
   public static String[] UNWANTED_FILETYPES = {"7z", "ai", "asp", "bat", "c", "csv", "db", "doc",
           "f", "go", "h", "ini", "jar", "java", "json", "jsp", "odg", "php", "pl",
           "ppt", "sxw", "tex", "vsd", "xls", "zip"};
+  public static int MAX_FOLDER_SIZE = 200;
 
   FileSort(String rootDir) {
     rootFileDir = fileSystem.getPath(rootDir).toFile();
@@ -62,7 +63,7 @@ public class FileSort {
         }
         Files.move(file.toPath(), destinationFile);
 
-        if (folderSize == 99) {
+        if (folderSize == MAX_FOLDER_SIZE-1) {
           folderNum++;
           folderSize = 0;
         } else {
