@@ -9,9 +9,9 @@ public class FileSort {
   FileSystem fileSystem = FileSystems.getDefault();
   File rootFileDir;
   HashMap<String, int[]> fileTypeFolderSize = new HashMap<>();
-  public static Set<String> UNWANTED_FILETYPES = new HashSet<>(Arrays.asList("7z", "ai", "asp", "bat", "c", "csv", "db", "doc",
+  public static Set<String> UNWANTED_FILETYPES = Set.of("7z", "ai", "asp", "bat", "c", "csv", "db", "doc",
           "f", "go", "h", "ini", "jar", "java", "json", "jsp", "odg", "php", "pl",
-          "ppt", "sxw", "tex", "vsd", "xls", "zip"));
+          "ppt", "sxw", "tex", "vsd", "xls", "zip");
   public static int MAX_FOLDER_SIZE = 200;
 
   public FileSort(String rootDir) {
