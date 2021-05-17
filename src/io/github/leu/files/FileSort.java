@@ -1,4 +1,4 @@
-package io.github.leu;
+package io.github.leu.files;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class FileSort {
     Path destinationFile = fileSystem.getPath(folderPath + "/" + file.getName());
 
     try {
-      if (UNWANTED_FILETYPES.contains(fileType)) {
+      if (UNWANTED_FILETYPES.contains(fileType) || fileType.equals("html") && !HtmlSort.isDiscordChatFile(file)) {
         Files.delete(file.toPath());
       } else {
         if (!Files.exists(destinationFolder)) {

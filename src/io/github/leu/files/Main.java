@@ -1,4 +1,4 @@
-package io.github.leu;
+package io.github.leu.files;
 
 public class Main {
   public static void main(String[] args) {
