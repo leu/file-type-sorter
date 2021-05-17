@@ -11,7 +11,7 @@ public class FileSort {
   HashMap<String, int[]> fileTypeFolderSize = new HashMap<>();
   public static Set<String> UNWANTED_FILETYPES = Set.of("7z", "ai", "asp", "bat", "c", "csv", "db", "doc",
           "f", "go", "h", "ini", "jar", "java", "json", "jsp", "odg", "php", "pl",
-          "ppt", "sxw", "tex", "vsd", "xls", "zip");
+          "ppt", "sxw", "tex", "vsd", "xls", "zip", "txt", "gif", "py", "xml", "m4p");
   public static int MAX_FOLDER_SIZE = 200;
 
   public FileSort(String rootDir) {
@@ -53,7 +53,10 @@ public class FileSort {
     Path destinationFile = fileSystem.getPath(folderPath + "/" + file.getName());
 
     try {
-      if (UNWANTED_FILETYPES.contains(fileType) || fileType.equals("html") && !HtmlSort.isDiscordChatFile(file)) {
+      if (UNWANTED_FILETYPES.contains(fileType)
+              || fileType.equals("html") && !HtmlSort.isDiscordChatFile(file)
+              || fileType.equals("png") && Files.size(file.toPath()) < 100000
+              || fileType.equals("jpg") && Files.size(file.toPath()) < 50000) {
         Files.delete(file.toPath());
       } else {
         if (!Files.exists(destinationFolder)) {
